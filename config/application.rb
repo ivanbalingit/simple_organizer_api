@@ -12,7 +12,7 @@ require "action_view/railtie"
 require "action_cable/engine"
 # require "sprockets/railtie"
 require "rails/test_unit/railtie"
-require "jwt"
+require_relative "../lib/json_web_token"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
