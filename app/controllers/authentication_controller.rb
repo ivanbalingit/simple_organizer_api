@@ -6,7 +6,7 @@ class AuthenticationController < ApplicationController
 
   # POST /authenticate
   # Required Headers:
-  #   Content-Type: text/json
+  #   Content-Type: application/json
   # Body Contents (JSON):
   #   username: username of the user
   #   password: password of the user
