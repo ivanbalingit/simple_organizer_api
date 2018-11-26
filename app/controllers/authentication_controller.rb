@@ -4,6 +4,14 @@ class AuthenticationController < ApplicationController
   
   skip_before_action :authenticate_request
 
+  # POST /authenticate
+  # Required Headers:
+  #   Content-Type: text/json
+  # Body Contents (JSON):
+  #   username: username of the user
+  #   password: password of the user
+  # Returns (JSON):
+  #   auth_token: the user's token if authentication successful
   def authenticate
     command = AuthenticateUser.call(params[:username], params[:password])
 
