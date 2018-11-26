@@ -35,7 +35,7 @@ class TasksController < ApplicationController
   #   Updated task object if save is successful
   def update
     @task = Task.find(params[:id])
-    if @task.user = @current_user
+    if @task.user == @current_user
       @task.update(task_params)
       render json: @task
     else
@@ -50,7 +50,7 @@ class TasksController < ApplicationController
   #   Message whether task was deleted successfully or not
   def destroy
     @task = Task.find(params[:id])
-    if @task.user = @current_user
+    if @task.user == @current_user
       @task.destroy
       render json: { success: "Task deleted successfully" }
     else
