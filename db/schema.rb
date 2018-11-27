@@ -32,13 +32,14 @@ ActiveRecord::Schema.define(version: 2018_11_27_080100) do
   end
 
   create_table "tasks", force: :cascade do |t|
-    t.bigint "user_id"
+    t.string "taskable_type"
+    t.bigint "taskable_id"
     t.string "name"
     t.date "due_date"
     t.text "details"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_tasks_on_user_id"
+    t.index ["taskable_type", "taskable_id"], name: "index_tasks_on_taskable_type_and_taskable_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -49,5 +50,4 @@ ActiveRecord::Schema.define(version: 2018_11_27_080100) do
   end
 
   add_foreign_key "subtasks", "tasks"
-  add_foreign_key "tasks", "users"
 end
