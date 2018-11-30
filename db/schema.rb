@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_27_163410) do
+ActiveRecord::Schema.define(version: 2018_11_30_153852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,16 @@ ActiveRecord::Schema.define(version: 2018_11_27_163410) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_notes_on_user_id"
+  end
+
+  create_table "reminders", force: :cascade do |t|
+    t.date "reminder_date"
+    t.text "details"
+    t.string "remindable_type"
+    t.bigint "remindable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["remindable_type", "remindable_id"], name: "index_reminders_on_remindable_type_and_remindable_id"
   end
 
   create_table "subtasks", force: :cascade do |t|
