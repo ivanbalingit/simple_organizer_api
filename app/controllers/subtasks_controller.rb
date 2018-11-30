@@ -1,12 +1,14 @@
 class SubtasksController < ApplicationController
   # GET /tasks/:task_id/subtasks
+  # GET /events/:event_id/tasks/:task_id/subtasks
   # Required Headers:
   #   Authorization: token of user from authentication
   # Returns (JSON):
   #   List of subtasks for task of user with given token
   def index
     @task = Task.find(params[:task_id])
-    if @task.user == @current_user
+    if (@task.taskable_type == "User" && @task.taskable == @current_user) ||
+       (@task.taskable_type == "Event" && @task.taskable == Event.find(params[:event_id]))
       render json: @task.subtasks
     else
       render json: { error: "No such task for user" }, status: :unauthorized
@@ -14,6 +16,7 @@ class SubtasksController < ApplicationController
   end
   
   # POST /tasks/:task_id/subtasks
+  # POST /events/:event_id/tasks/:task_id/subtasks
   # Required Headers:
   #   Authorization: token of user from authentication
   #   Content-Type: application/json
@@ -24,7 +27,8 @@ class SubtasksController < ApplicationController
   #   Subtask object if save successful
   def create
     @task = Task.find(params[:task_id])
-    if @task.user == @current_user
+    if (@task.taskable_type == "User" && @task.taskable == @current_user) ||
+       (@task.taskable_type == "Event" && @task.taskable == Event.find(params[:event_id]))
       @subtask = @task.subtasks.create(subtask_params)
       render json: @subtask
     else
@@ -33,6 +37,7 @@ class SubtasksController < ApplicationController
   end
 
   # PATCH /tasks/:task_id/subtasks/:id
+  # PATCH  /events/:event_id/tasks/:task_id/subtasks/:id
   # Required Headers:
   #   Authorization: token of user from authentication
   #   Content-Type: application/json
@@ -44,7 +49,9 @@ class SubtasksController < ApplicationController
   def update
     @task = Task.find(params[:task_id])
     @subtask = Subtask.find(params[:id])
-    if @task.user == @current_user && @subtask.task = @task
+    if (@task.taskable_type == "User" && @task.taskable == @current_user) ||
+       (@task.taskable_type == "Event" && @task.taskable == Event.find(params[:event_id])) &&
+       (@subtask.task == @task)
       @subtask.update(subtask_params)
       render json: @subtask
     else
@@ -53,6 +60,7 @@ class SubtasksController < ApplicationController
   end
 
   # DELETE /tasks/:task_id/subtasks/:id
+  # DELETE /events/:event_id/tasks/:task_id/subtasks/:id
   # Required Headers:
   #   Authorization: token of user from authentication
   # Returns (JSON):
@@ -60,7 +68,9 @@ class SubtasksController < ApplicationController
   def destroy
     @task = Task.find(params[:task_id])
     @subtask = Subtask.find(params[:id])
-    if @task.user == @current_user && @subtask.task = @task
+    if (@task.taskable_type == "User" && @task.taskable == @current_user) ||
+       (@task.taskable_type == "Event" && @task.taskable == Event.find(params[:event_id])) &&
+       (@subtask.task == @task)
       @subtask.destroy
       render json: { success: "Subtask deleted successfully" }
     else
