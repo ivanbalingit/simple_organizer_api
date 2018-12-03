@@ -35,5 +35,13 @@ module SimpleOrganizerApi
     
     # Include contents of lib directory when Rails loads
     config.autoload_paths << Rails.root.join('lib')
+    
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+         origins '*'
+         resource '*', :headers => :any, :methods => [:get, :post, :options, :patch, :delete]
+       end
+    end
   end
 end
+
